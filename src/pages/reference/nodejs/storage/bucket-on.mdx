@@ -10,8 +10,6 @@ import { bucket } from '@nitric/sdk'
 
 const assets = bucket('assets')
 
-const accessibleAssets = bucket('assets').for('reading')
-
 // The request will contain the name of the file `key` and the type of event `type`
 assets.on('delete', '*', (ctx) => {
   console.log(`A file named ${ctx.req.key} was deleted`)
@@ -19,13 +17,6 @@ assets.on('delete', '*', (ctx) => {
 
 assets.on('write', '/images/cat', (ctx) => {
   console.log('A cat image was written')
-})
-
-// If `on` is called with a permissioned bucket, a file will also be provided with the request
-accessibleAssets.on('write', '/images/dog', async (ctx) => {
-  const dogImage = await ctx.req.file.read()
-
-  console.log(dogImage)
 })
 ```
 
